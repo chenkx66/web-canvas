@@ -9,6 +9,11 @@ export default defineConfig(async ({ command, mode }) => {
     server: {
       host: true
     },
+    css:{
+      modules: {
+        localsConvention: 'camelCaseOnly'
+      }
+    },
     build: {
       lib: {
         // Could also be a dictionary or array of multiple entry points
