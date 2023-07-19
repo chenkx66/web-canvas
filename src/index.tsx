@@ -1,12 +1,16 @@
-import { useState } from 'react'
+import Center from "./components/center";
 import Header from "./components/header";
+import Left from './components/left'
+import Right from './components/right'
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
-    <div>
+    <div className='main'>
       <Header />
+      <Left/>
+      <Right/>
+      <Center/>
     </div>
   )
 }

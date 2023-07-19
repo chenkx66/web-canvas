@@ -1,0 +1,8 @@
+.right{
+  width: 300px;
+  position: absolute;
+  top: 60px;
+  right: 0;
+  bottom: 0;
+  border-left: 1px solid #e2e2e2;
+}
