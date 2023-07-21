@@ -1,10 +1,13 @@
+import { DomRender } from '..'
 import { Element } from '../base/element'
+import { Render } from '../renders/base/render'
 import './canvas.css'
 
-interface CanvasOptions {
+interface CanvasOptions<T extends Render> {
   width?: number,
   height?: number,
   el: string | HTMLElement
+  render: T
 }
 
 const MAX_SCALE = 10
@@ -14,15 +17,23 @@ export class Canvas {
   width?: number
   height?: number
   rootEl: HTMLElement | undefined
+  render: Render
 
   scale: number = 1
 
   private _zoomEvent: (e: WheelEvent) => void
 
-  constructor(options: CanvasOptions) {
+  constructor(options: CanvasOptions<Render>) {
     this._zoomEvent = this.handleZoom.bind(this)
 
-    const { width, height, el } = options;
+    const { width, height, el, render } = options;
+
+    if (!render) {
+      const domRender = new DomRender()
+      this.render = domRender
+    } else {
+      this.render = render
+    }
 
     if (width) {
       this.width = width
@@ -105,8 +116,8 @@ export class Canvas {
     this.removeZoomEvent()
   }
 
-  add<T extends Element>(element: T){
-    const node = element.render();
+  add<T extends Element>(element: T) {
+    const node = this.render.create(element)
     this.rootEl?.appendChild(node)
   }
 }

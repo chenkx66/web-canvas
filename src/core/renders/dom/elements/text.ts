@@ -15,11 +15,4 @@ export class Text extends Element{
   constructor(options?:TextElement){
     super()
   }
-
-  render(): HTMLElement {
-    const wrap = document.createElement('div')
-    const node = document.createTextNode(this.text)
-    wrap.appendChild(node)
-    return wrap
-  }
 }

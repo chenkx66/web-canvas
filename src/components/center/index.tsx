@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react"
-import { Canvas } from '@/core'
+import { Canvas, DomRender } from '@/core'
 import styles from './center.module.css'
 
 interface props {
@@ -15,7 +15,8 @@ export default function Center(props: props) {
     const re = new Canvas({
       width: 800,
       height: 800 * 9 / 16,
-      el: current
+      el: current,
+      render: new DomRender()
     })
     props.onChange(re)
   }, [])
