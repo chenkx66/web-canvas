@@ -1,3 +1,4 @@
+import { Element } from '../base/element'
 import './canvas.css'
 
 interface CanvasOptions {
@@ -102,5 +103,10 @@ export class Canvas {
 
   removeEvent() {
     this.removeZoomEvent()
+  }
+
+  add<T extends Element>(element: T){
+    const node = element.render();
+    this.rootEl?.appendChild(node)
   }
 }

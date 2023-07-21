@@ -1,11 +1,14 @@
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef } from "react"
 import { Canvas } from '@/core'
 import styles from './center.module.css'
 
-export default function Center() {
+interface props {
+  onChange: Function
+}
+
+export default function Center(props: props) {
 
   const target = useRef<HTMLDivElement | null>(null)
-  const [canvas, setCanvas] = useState<Canvas>()
 
   useEffect(() => {
     const current = target.current as HTMLElement
@@ -14,11 +17,7 @@ export default function Center() {
       height: 800 * 9 / 16,
       el: current
     })
-    setCanvas(re)
-
-    return () => {
-      canvas?.destory()
-    }
+    props.onChange(re)
   }, [])
 
   return (
