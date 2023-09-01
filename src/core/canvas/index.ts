@@ -10,13 +10,15 @@ interface CanvasOptions<T extends Render> {
   render: T
 }
 
-const MAX_SCALE = 10
+const MAX_SCALE = 3
 const MIN_SCALE = 0.1
+const SCALE_STEP = 0.1
 
 export class Canvas {
   width?: number
   height?: number
   rootEl: HTMLElement | undefined
+  canvasEl: HTMLElement | undefined
   render: Render
 
   scale: number = 1
@@ -59,12 +61,20 @@ export class Canvas {
   }
 
   init() {
-    const parentNode = this.rootEl?.parentNode as HTMLElement
-    parentNode!.style.position = 'relative'
+    this.rootEl!.classList.add('canvas-wrapper')
 
-    this.rootEl!.style.width = `${this.width}px`
-    this.rootEl!.style.height = `${this.height}px`
-    this.rootEl!.classList.add('canvas-main')
+    const canvasEl = document.createElement('div')
+
+    canvasEl.style.width = `${this.width}px`
+    canvasEl.style.height = `${this.height}px`
+    canvasEl.classList.add('canvas-main')
+
+    this.canvasEl = canvasEl
+
+    this.rootEl!.childNodes.forEach(el => {
+      this.rootEl?.removeChild(el)
+    })
+    this.rootEl?.appendChild(canvasEl)
   }
 
   addEvent() {
@@ -80,11 +90,11 @@ export class Canvas {
   }
 
   handleZoom(e: WheelEvent) {
-    e.preventDefault()
 
     const { deltaY, ctrlKey } = e;
-
     if (!ctrlKey) return
+
+    e.preventDefault()
 
     requestAnimationFrame(() => {
       this.zoom(deltaY > 0 ? 1 : -1)
@@ -93,7 +103,7 @@ export class Canvas {
 
   zoom(type: number) {
 
-    let scale = Number.parseFloat((this.scale + 0.01 * type).toFixed(2))
+    let scale = Number.parseFloat((this.scale + SCALE_STEP * type).toFixed(2))
 
     if (scale > MAX_SCALE) scale = MAX_SCALE
     if (scale < MIN_SCALE) scale = MIN_SCALE
@@ -101,8 +111,8 @@ export class Canvas {
     const newWidth = this.width! * scale
     const newHeight = this.height! * scale
 
-    this.rootEl!.style.width = `${newWidth}px`
-    this.rootEl!.style.height = `${newHeight}px`
+    this.canvasEl!.style.width = `${newWidth}px`
+    this.canvasEl!.style.height = `${newHeight}px`
 
     this.scale = scale
 
@@ -118,6 +128,6 @@ export class Canvas {
 
   add<T extends Element>(element: T) {
     const node = this.render.create(element)
-    this.rootEl?.appendChild(node)
+    this.canvasEl?.appendChild(node)
   }
 }

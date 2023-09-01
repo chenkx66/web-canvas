@@ -23,9 +23,7 @@ export default function Center(props: props) {
 
   return (
     <div className={styles.editorCenter}>
-      <div className={styles.canvasWrapper}>
-        <div ref={target}></div>
-      </div>
+    <div ref={target}></div>
     </div>
   )
 }

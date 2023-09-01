@@ -4,6 +4,7 @@ import Header from "./components/header";
 import Left from './components/left'
 import Right from './components/right'
 import { Canvas } from "./core";
+import classes from './index.module.css'
 
 function App() {
   const [canvas, setCanvas] = useState<Canvas>()
@@ -19,7 +20,7 @@ function App() {
   }
 
   return (
-    <div className='main'>
+    <div className={classes.main}>
       <Header />
       <Left canvas={canvas}/>
       <Right />
